@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="description" content="nbd" />
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
+<meta charset=utf-8 />
+<title>JS Bin</title>
+<style type="text/css">
+#doit{
+  font-size:20px;
+
+  display:block;
+  height:200px;
+  width:100%;
+  margin-bottom:50px;
+}
+#status{
+  font-size:20px;
+  display:block;
+  height:200px;
+  width:100%;
+  margin-bottom:50px;
+}
+.result{
+  margin:20px;
+  border:3px solid #000;
+  
+}
+.error{
+  margin:20px;
+  border:3px solid #ff0000;
+  padding:5px;
+}
+</style>
+</head>
+<body>
+  <h5>result:</h5>
+  <button id="doit">doit</button>
+  <button id="status">status</button>
+  <div class="result">
+  </div> 
+   <div class="error">
+  </div>
+  <script>
+$(document).ready( function() {
+  $("#status").click(function(){
+    console.log("status click");
+    nbd({});
+  });
+  
+  $("#doit").click(function(){
+    console.log("do it click");
+    nbd({"open":"True"});
+  });
+});
+  
+function nbd(foobar){
+  
+  console.log("nbd");
+  
+  $.post( "http://api.noisebridge.net/gate/", foobar, function( data ) {
+    console.log( "foo");
+    console.log(data);
+
+    $( ".result" ).append( JSON.stringify(data) );
+  })
+  .done(function( data, textStatus, jqXHR ) {
+    $( ".result" ).append( JSON.stringify(data) );
+    $( ".result" ).append( JSON.stringify(textStatus) );
+    $( ".result" ).append( JSON.stringify(jqXHR) );
+
+  })
+  .fail(function( jqXHR, textStatus, errorThrown ) {
+    console.log("error");
+    $( ".error" ).append( JSON.stringify(jqXHR) );
+    $( ".error" ).append( JSON.stringify(textStatus) );
+    $( ".error" ).append( JSON.stringify(errorThrown) );
+  }); 
+}
+</script>
+</body>
+</html>
